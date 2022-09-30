@@ -3,6 +3,10 @@ import fetch from 'node-fetch';
 import { VERCEL_BASE_API_ENDPOINT } from './config';
 import { VercelDeployment } from './types/VercelDeployment';
 
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 /**
  * Awaits for the Vercel deployment to be in a "ready" state.
  *
@@ -25,10 +29,12 @@ const awaitVercelDeployment = (baseUrl: string, timeout: number): Promise<Vercel
         .catch((error: string) => reject(error));
       core.debug(`Received these data from Vercel: ${JSON.stringify(deployment)}`);
 
-      if (deployment.readyState === 'READY' || deployment.readyState === 'ERROR') {
+      if (deployment?.readyState === 'READY' || deployment?.readyState === 'ERROR') {
         core.debug('Deployment has been found');
         return resolve(deployment);
       }
+
+      await delay(5000)
     }
     core.debug(`Last deployment response: ${JSON.stringify(deployment)}`);
 
