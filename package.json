@@ -1,5 +1,6 @@
 {
   "name": "github-action-await-vercel",
+  "version": "1.0.0",
   "private": true,
   "description": "GitHub Action - Awaits for a Vercel deployment to be ready",
   "homepage": "https://github.com/UnlyEd/github-action-await-vercel",
