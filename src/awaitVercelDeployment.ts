@@ -2,9 +2,10 @@ import * as core from '@actions/core';
 import fetch from 'node-fetch';
 import { VERCEL_BASE_API_ENDPOINT } from './config';
 import { VercelDeployment } from './types/VercelDeployment';
+import { getPreviewUrl } from './getPreviewUrl';
 
 function delay(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 /**
@@ -14,10 +15,13 @@ function delay(ms) {
  * @param timeout Duration (in seconds) until we'll await for.
  *  When the timeout is reached, the Promise is rejected (the action will fail).
  */
-const awaitVercelDeployment = (baseUrl: string, timeout: number): Promise<VercelDeployment> => {
+const awaitVercelDeployment = (timeout: number): Promise<VercelDeployment> => {
   return new Promise(async (resolve, reject) => {
     let deployment: VercelDeployment = {};
     const timeoutTime = new Date().getTime() + timeout;
+
+    const baseUrl = await getPreviewUrl();
+    core.debug(`Url to wait for: ${baseUrl}`); // debug is only output if you set the secret `ACTIONS_RUNNER_DEBUG` to true https://github.com/actions/toolkit/blob/master/docs/action-debugging.md#how-to-access-step-debug-logs
 
     while (new Date().getTime() < timeoutTime) {
       deployment = await fetch(`${VERCEL_BASE_API_ENDPOINT}/v11/now/deployments/get?url=${baseUrl}`, {
@@ -34,7 +38,7 @@ const awaitVercelDeployment = (baseUrl: string, timeout: number): Promise<Vercel
         return resolve(deployment);
       }
 
-      await delay(5000)
+      await delay(5000);
     }
     core.debug(`Last deployment response: ${JSON.stringify(deployment)}`);
 
