@@ -1,4 +1,4 @@
-import core from '@actions/core';
+import * as core from '@actions/core';
 import axios from 'axios';
 import querystring from 'querystring';
 import { VercelDeployment } from './types/VercelDeployment';
@@ -19,8 +19,8 @@ export const getPreviewUrl = () => {
     const githubProject = process.env.GITHUB_REPOSITORY;
     const branch = process.env.BRANCH_NAME;
     const repo = githubProject?.split('/')[1];
-    const teamId = core.getInput('vercel_team_id');
-    const projectId = core.getInput('vercel_project_id');
+    const teamId = +core.getInput('vercel_team_id');
+    const projectId = +core.getInput('vercel_project_id');
 
     const query = {
       teamId,
