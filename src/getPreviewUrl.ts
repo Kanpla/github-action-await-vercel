@@ -36,6 +36,10 @@ export const getPreviewUrl = () => {
       },
     });
 
+    core.debug(`token: ${token}`);
+    core.debug(`branch: ${branch}`);
+    core.debug(`repo: ${repo}`);
+
     if (!data || !data.deployments || data.deployments.length <= 0) {
       core.error(JSON.stringify(data, null, 2));
       throw new Error('no deployments found');
