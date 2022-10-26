@@ -8,8 +8,8 @@ inputs:
     description: 'Custom timeout value (default: "10" (seconds))'
     required: false
 outputs:
-  deploymentDetails:
-    description: 'Forwarded Vercel API response - See https://vercel.com/docs/api#endpoints/deployments/get-a-single-deployment/response-parameters'
+  url:
+    description: 'URL of the deployment'
 runs:
   using: 'node16'
   main: 'github-action-runtime/index.js'

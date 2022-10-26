@@ -32,7 +32,7 @@ const run = (): void => {
 
     awaitVercelDeployment(timeout)
       .then((deployment: VercelDeployment) => {
-        core.setOutput('deploymentDetails', deployment);
+        core.setOutput('url', deployment.url);
       })
       .catch((error) => {
         core.setFailed(error);
