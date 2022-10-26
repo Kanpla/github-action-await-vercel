@@ -4,8 +4,11 @@ branding:
   icon: activity
   color: black
 inputs:
-  deployment-url:
-    description: 'Url you want to wait for'
+  vercel_team_id:
+    description: 'name of the team to check on (e.g. kanpla)'
+    required: true
+  vercel_project_id:
+    description: 'name of the project to check on (e.g. mono-frontend)'
     required: true
   timeout:
     description: 'Custom timeout value (default: "10" (seconds))'
@@ -14,5 +17,5 @@ outputs:
   deploymentDetails:
     description: 'Forwarded Vercel API response - See https://vercel.com/docs/api#endpoints/deployments/get-a-single-deployment/response-parameters'
 runs:
-  using: 'node12'
+  using: 'node16'
   main: 'github-action-runtime/index.js'
