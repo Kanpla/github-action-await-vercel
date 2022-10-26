@@ -19,8 +19,8 @@ export const getPreviewUrl = () => {
     const githubProject = process.env.GITHUB_REPOSITORY;
     const branch = process.env.BRANCH_NAME;
     const repo = githubProject?.split('/')[1];
-    const teamId = +core.getInput('vercel_team_id');
-    const projectId = +core.getInput('vercel_project_id');
+    const teamId = process.env.VERCEL_TEAM_ID;
+    const projectId = process.env.VERCEL_PROJECT_ID;
 
     const query = {
       teamId,

@@ -4,12 +4,6 @@ branding:
   icon: activity
   color: black
 inputs:
-  vercel_team_id:
-    description: 'name of the team to check on (e.g. kanpla)'
-    required: true
-  vercel_project_id:
-    description: 'name of the project to check on (e.g. mono-frontend)'
-    required: true
   timeout:
     description: 'Custom timeout value (default: "10" (seconds))'
     required: false
