@@ -73,18 +73,20 @@ const awaitVercelDeployment = (timeout: number): Promise<VercelDeployment> => {
     core.debug(`Url to wait for: ${baseUrl}`); // debug is only output if you set the secret `ACTIONS_RUNNER_DEBUG` to true https://github.com/actions/toolkit/blob/master/docs/action-debugging.md#how-to-access-step-debug-logs
 
     while (new Date().getTime() < timeoutTime) {
-      deployment = await fetch(`${VERCEL_BASE_API_ENDPOINT}/v11/now/deployments/get?url=${baseUrl}`, {
-        headers: {
-          Authorization: `Bearer ${process.env.VERCEL_TOKEN}`,
-        },
-      })
-        .then((data) => data.json())
-        .catch((error: string) => reject(error));
-      core.debug(`Received these data from Vercel: ${JSON.stringify(deployment)}`);
+      try {
+        deployment = await fetch(`${VERCEL_BASE_API_ENDPOINT}/v11/now/deployments/get?url=${baseUrl}`, {
+          headers: {
+            Authorization: `Bearer ${process.env.VERCEL_TOKEN}`,
+          },
+        }).then((data) => data.json());
+        core.debug(`Received these data from Vercel: ${JSON.stringify(deployment)}`);
 
-      if (deployment?.readyState === 'READY' || deployment?.readyState === 'ERROR') {
-        core.debug('Deployment has been found');
-        return resolve(deployment);
+        if (deployment?.readyState === 'READY' || deployment?.readyState === 'ERROR') {
+          core.debug('Deployment has been found');
+          return resolve(deployment);
+        }
+      } catch (err) {
+        console.log('Fetch vercel err:', err);
       }
 
       await delay(5000);
